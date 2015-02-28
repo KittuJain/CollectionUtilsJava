@@ -29,6 +29,13 @@ class IntegerMapper implements ListMapper<Integer> {
 	}
 }
 
+class StringMapper implements ListMapper<String> {
+	public String mapMethod (String element){
+		return element.toLowerCase();
+	}
+}
+
+
 public class CollectionUtilTest {
 	@Test
 	public void filter_returns_an_integer_List_of_elements_that_are_greater_than_2(){
@@ -77,6 +84,26 @@ public class CollectionUtilTest {
 		expected.add(4);
 
 		List<Integer> mappedList = CollectionUtil.<Integer>map(numbers,listMapper);
+		assertEquals(expected.get(0), mappedList.get(0));
+		assertEquals(expected.get(1), mappedList.get(1));
+		assertEquals(expected.get(2), mappedList.get(2));
+	}
+
+	@Test
+	public void map_returns_a_string_List_after_adding_1_to_each_element(){
+		ListMapper listMapper = new StringMapper();
+		List<String> colors = new ArrayList<String>();
+		List<String> expected = new ArrayList<String>();
+		
+		colors.add("RED");
+		colors.add("Yellow");
+		colors.add("BlUe");
+
+		expected.add("red");
+		expected.add("yellow");
+		expected.add("blue");
+
+		List<String> mappedList = CollectionUtil.<String>map(colors,listMapper);
 		assertEquals(expected.get(0), mappedList.get(0));
 		assertEquals(expected.get(1), mappedList.get(1));
 		assertEquals(expected.get(2), mappedList.get(2));
