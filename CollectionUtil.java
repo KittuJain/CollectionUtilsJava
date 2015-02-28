@@ -19,4 +19,12 @@ public class CollectionUtil {
 		}
 		return mappedList;
 	}
+
+	public static <E,K> K reduce(List<E> list, ListReducer<E,K> listReducer, K initial){
+		K previousValue = initial;
+		for(E item : list){
+			previousValue = listReducer.reduceMethod(previousValue, item);
+		} 
+		return previousValue;
+	}
 }

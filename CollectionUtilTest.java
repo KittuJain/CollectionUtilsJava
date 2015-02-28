@@ -11,6 +11,10 @@ interface ListMapper<E, K> {
 	K mapMethod(E element);
 }
 
+interface ListReducer<E, K> {
+	K reduceMethod(K previousValue,E currentValue);
+}
+
 class IntegerFilter implements ListFilter<Integer> {
 	public boolean filterMethod (Integer element){
 		return (element > 2);
@@ -34,6 +38,13 @@ class StringMapper implements ListMapper<String,String> {
 		return element.toLowerCase();
 	}
 }
+
+class IntegerReducer implements ListReducer<Integer,String> {
+	public String reduceMethod(String previousValue,Integer currentValue){
+		return previousValue + currentValue;
+	}
+}
+
 
 public class CollectionUtilTest {
 	@Test
@@ -97,5 +108,24 @@ public class CollectionUtilTest {
 		assertEquals(expected[0], mappedList.get(0));
 		assertEquals(expected[1], mappedList.get(1));
 		assertEquals(expected[2], mappedList.get(2));
+	}
+
+	@Test
+	public void reduce_retuns_one_element(){
+		ListReducer listReducer = new IntegerReducer();
+		List<Integer> list = new  ArrayList<Integer>();
+		String expected ="num 987654321";
+		list.add(9);
+		list.add(8);
+		list.add(7);
+		list.add(6);
+		list.add(5);
+		list.add(4);
+		list.add(3);
+		list.add(2);
+		list.add(1);
+
+		String result = CollectionUtil.<Integer,String>reduce(list,listReducer,"num ");
+		assertEquals(expected,result);
 	}
 }
