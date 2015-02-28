@@ -11,4 +11,12 @@ public class CollectionUtil {
 		}
 		return filteredList;
 	}
+
+	public static<E> List<E> map(List<E> list, ListMapper listMapper) {
+		List<E> mappedList = new ArrayList();
+		for(E item : list) {
+			mappedList.add((E)listMapper.mapMethod(item));
+		}
+		return mappedList;
+	}
 }
