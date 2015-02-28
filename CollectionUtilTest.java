@@ -7,8 +7,8 @@ interface ListFilter<E> {
 	boolean filterMethod(E element);
 }
 
-interface ListMapper<E> {
-	E mapMethod(E element);
+interface ListMapper<E, K> {
+	K mapMethod(E element);
 }
 
 class IntegerFilter implements ListFilter<Integer> {
@@ -23,18 +23,17 @@ class StringFilter implements ListFilter<String> {
 	}
 }
 
-class IntegerMapper implements ListMapper<Integer> {
+class IntegerMapper implements ListMapper<Integer,Integer> {
 	public Integer mapMethod (Integer element){
-		return element + 1;
+		return (element + 1);
 	}
 }
 
-class StringMapper implements ListMapper<String> {
+class StringMapper implements ListMapper<String,String> {
 	public String mapMethod (String element){
 		return element.toLowerCase();
 	}
 }
-
 
 public class CollectionUtilTest {
 	@Test
@@ -73,39 +72,30 @@ public class CollectionUtilTest {
 	public void map_returns_an_integer_List_after_adding_1_to_each_element(){
 		ListMapper listMapper = new IntegerMapper();
 		List<Integer> numbers = new ArrayList<Integer>();
-		List<Integer> expected = new ArrayList<Integer>();
-		
+		int[] expected = {2,3,4};
 		numbers.add(1);
 		numbers.add(2);
 		numbers.add(3);
-
-		expected.add(2);
-		expected.add(3);
-		expected.add(4);
-
-		List<Integer> mappedList = CollectionUtil.<Integer>map(numbers,listMapper);
-		assertEquals(expected.get(0), mappedList.get(0));
-		assertEquals(expected.get(1), mappedList.get(1));
-		assertEquals(expected.get(2), mappedList.get(2));
+		
+		List<Integer> mappedList = CollectionUtil.<Integer,Integer>map(numbers, listMapper);
+		assertEquals(expected[0],(int)(mappedList.get(0)));
+		assertEquals(expected[1],(int)(mappedList.get(1)));
+		assertEquals(expected[2],(int)(mappedList.get(2)));
 	}
 
 	@Test
-	public void map_returns_a_string_List_after_adding_1_to_each_element(){
+	public void map_returns_a_string_List_after_converting_each_element_of_list_to_lowerCase(){
 		ListMapper listMapper = new StringMapper();
 		List<String> colors = new ArrayList<String>();
-		List<String> expected = new ArrayList<String>();
+		String[] expected = {"red","yellow","blue"};
 		
 		colors.add("RED");
 		colors.add("Yellow");
 		colors.add("BlUe");
 
-		expected.add("red");
-		expected.add("yellow");
-		expected.add("blue");
-
-		List<String> mappedList = CollectionUtil.<String>map(colors,listMapper);
-		assertEquals(expected.get(0), mappedList.get(0));
-		assertEquals(expected.get(1), mappedList.get(1));
-		assertEquals(expected.get(2), mappedList.get(2));
+		List<String> mappedList = CollectionUtil.<String,String>map(colors,listMapper);
+		assertEquals(expected[0], mappedList.get(0));
+		assertEquals(expected[1], mappedList.get(1));
+		assertEquals(expected[2], mappedList.get(2));
 	}
 }

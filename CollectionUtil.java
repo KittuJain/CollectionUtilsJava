@@ -12,10 +12,10 @@ public class CollectionUtil {
 		return filteredList;
 	}
 
-	public static<E> List<E> map(List<E> list, ListMapper listMapper) {
-		List<E> mappedList = new ArrayList();
+	public static<E,K> List<K> map(List<E> list, ListMapper listMapper) {
+		List<K> mappedList = new ArrayList<K>();
 		for(E item : list) {
-			mappedList.add((E)listMapper.mapMethod(item));
+			mappedList.add((K)listMapper.mapMethod(item));
 		}
 		return mappedList;
 	}
